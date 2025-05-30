@@ -17,7 +17,7 @@ on:
       ax18_or_m2:
         description: 'ax18_or_m2? (ax18/m2)'
         required: true
-        default: 'ax18'
+        default: 'm2'
       
       only_config:
         description: "only_config?"
@@ -126,18 +126,8 @@ jobs:
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
 
-    - name: Load custom configuration
+    - name: 设置LAN IP地址（路由器登录地址）
       run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_P2_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P2_SH
-        make defconfig
-        sudo cp .config /FULL_CONFIG_IPQ60xx-VIKINGYFY.cfg
-        
-        - name: 设置LAN IP地址（路由器登录地址）
-        run: |
         cd openwrt
         SET_IP=${{ github.event.inputs.LAN_IP }}
         if [[ $SET_IP =~ ^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ ]]; then
@@ -149,6 +139,17 @@ jobs:
         else
             echo "Invalid IP address, use default."
         fi
+
+    - name: Load custom configuration
+      run: |
+        [ -e files ] && mv files openwrt/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        chmod +x $DIY_P2_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
+        make defconfig
+        sudo cp .config /FULL_CONFIG_IPQ60xx-VIKINGYFY.cfg
+        
 
     - name: Upload CONFIG
       uses: actions/upload-artifact@main
