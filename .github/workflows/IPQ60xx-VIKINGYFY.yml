@@ -72,11 +72,16 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    # - name: Free Disk Space
+    - name: Free Disk Space
       # if: ${{ github.event.inputs.only_config != 'true' }}
-      # uses: jlumbroso/free-disk-space@main
-      # with:
-        # tool-cache: true
+      uses: jlumbroso/free-disk-space@main
+      with:
+        tool-cache: true
+        android: false
+        dotnet: false
+        haskell: false
+        large-packages: false
+        swap-storage: false
         # android: true
         # dotnet: true
         # haskell: true
