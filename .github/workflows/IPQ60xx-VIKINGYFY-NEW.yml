@@ -100,11 +100,17 @@ jobs:
         sudo -E apt-mark hold grub-efi-amd64-signed
         sudo -E apt -y update --allow-unauthenticated
         sudo -E apt -y full-upgrade
-        # sudo -E apt -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison btrfs-progs build-essential bzip2 ca-certificates ccache clang cmake coreutils cpio curl device-tree-compiler ecj fakeroot fastjar file flex g++ g++-multilib gawk gcc-multilib genisoimage gettext git git-core gnutls-dev gperf gzip haveged help2man intltool jq lib32gcc-s1 libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev libz-dev lld llvm lrzsz mkisofs mold msmtp nano ninja-build p7zip p7zip-full patch pigz pkgconf python3 python3-docutils python3-pip python3-ply python3-pyelftools python3-setuptools qemu-utils quilt re2c rename rsync scons squashfs-tools subversion swig tar texinfo uglifyjs unzip upx upx-ucl vim wget xmlto xsltproc xxd xz-utils yasm zip zlib1g-dev zstd
-        sudo -E apt -y install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+        sudo -E apt -yqq autoremove --purge
+        sudo -E apt -yqq autoclean
+        sudo -E apt -yqq clean
+        sudo -E apt -yqq install dos2unix python3-netifaces libfuse-dev
+        sudo bash -c 'bash <(curl -sL https://build-scripts.immortalwrt.org/init_build_environment.sh)'
         sudo -E systemctl daemon-reload
         sudo apt-get autoremove -y --purge
-        sudo apt-get clean
+          
+          sudo mkdir -p /mnt/build_wrt
+          sudo chown $USER:$USER /mnt/build_wrt
+          sudo ln -s /mnt/build_wrt $GITHUB_WORKSPACE/wrt
 
     # - name: Initialization environment - immortalwrt
       # if: ${{ github.event.inputs.only_config != 'true' }}
