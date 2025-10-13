@@ -16,4 +16,4 @@
 # Add a feed source
 # echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 # echo 'src-git helloworld https://github.com/sbwml/openwrt_helloworld' >>feeds.conf.default
-git clone https://github.com/lwb1978/openwrt-gecoosac package/openwrt-gecoosac
+#git clone https://github.com/lwb1978/openwrt-gecoosac package/openwrt-gecoosac
